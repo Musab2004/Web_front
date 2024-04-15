@@ -64,6 +64,7 @@ export default function AdminNavbarLinks() {
           <p className={classes.linkText}>Pos</p>
         </Hidden>
       </Button>
+      <ThemeChanger />
       <div className={classes.manager}>
         <Button
           color={window.innerWidth > 959 ? "transparent" : "black"}
