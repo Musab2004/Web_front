@@ -1,7 +1,5 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-// import { getStore } from '../../Services/Stores'
-import MapComponent from '../../components/Map/MapComponent'
 
 // Here we use Material Ui Components
 import {
@@ -14,20 +12,15 @@ import {
 } from '@material-ui/core'
 import Person from '@material-ui/icons/Person'
 import Email from '@material-ui/icons/Mail'
-import { Phone, House, Money, MoneyOffRounded, PictureInPictureSharp } from '@material-ui/icons'
-import DeleteIcon from '@material-ui/icons/Delete';
+import { Phone, House, MoneyOffRounded, PictureInPictureSharp } from '@material-ui/icons'
 import { getSupplier, getSupplierPurchases } from 'Services/Supplier'
 import SupplierPurchases from 'components/Purchases/Supplier'
 import Card from 'components/Card/Card'
 import Loading from '../../components/Loading/Loading'
 import CardHeader from 'components/Card/CardHeader'
-import BillingHistoryTable from 'components/BillingHistory/BillingHistoryTable'
-import { Modal } from '@material-ui/core'
-import moment from 'moment'
 import CardIcon from 'components/Card/CardIcon'
 import GridContainer from 'components/Grid/GridContainer';
 import GridItem from 'components/Grid/GridItem';
-import { Chip } from '@material-ui/core'
 
 function ViewSupplier(props) {
   let { id } = useParams('id')

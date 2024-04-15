@@ -1,7 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import { getPurchase } from '../../Services/Purchases'
-import PurchaseMapComponent from '../../components/Map/PurchaseMapComponent'
 
 // Here we use Material Ui Components
 import {

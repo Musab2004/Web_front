@@ -33,8 +33,8 @@ function ProductCard(props) {
             <div class="card-body">
                 <h2 class="card-title">
                     {product.name}
-                    {/* <div class="badge badge-secondary">NEW</div> */}
                 </h2>
+                <div class="badge badge-secondary">{product.sku}</div>
                 <div class="card-actions justify-end">
                     <div class="badge badge-accent badge-outline">Rs. {product.default_sell_price}</div>
                     <div class="btn btn-success btn-sm "

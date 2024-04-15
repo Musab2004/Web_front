@@ -119,20 +119,6 @@ export async function getRechargeHistory(id) {
 }
 
 
-export async function getCustomerSubscriptions(id) {
-    let token = await Cookies.get('token')
-    return axios.get('/subscription/?customer=' + id, {
-        headers: {
-            "Authorization": `Token ${token}`
-        }
-    }).then(res => {
-        console.log(res.data)
-        return res.data
-    }).catch(e => {
-        throw e;
-    })
-}
-
 
 // search customers
 export async function searchCustomers(search) {

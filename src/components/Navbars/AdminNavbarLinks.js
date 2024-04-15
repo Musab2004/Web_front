@@ -21,7 +21,6 @@ import Button from "components/CustomButtons/Button.js";
 
 import styles from "assets/jss/material-dashboard-react/components/headerLinksStyle.js";
 import { useHistory } from 'react-router-dom'
-// import { getComplains } from "Services/Complains";
 import Cookies from "js-cookie";
 import ThemeChanger from "components/ThemeChanger";
 
@@ -31,21 +30,8 @@ export default function AdminNavbarLinks() {
   const classes = useStyles();
   const [openNotification, setOpenNotification] = React.useState(null);
   const [openProfile, setOpenProfile] = React.useState(null);
-  const [complains, setComplains] = React.useState(null);
   const history = useHistory()
-  const handleClickNotification = event => {
-    if (openNotification && openNotification.contains(event.target)) {
-      setOpenNotification(null);
-    } else {
-      setOpenNotification(event.currentTarget);
-    }
-  };
-  const handleCloseNotification = (item = null) => {
-    if (item != null) {
-      history.push({ pathname: '/admin/complains/' + item.id, complain: item })
-    }
-    setOpenNotification(null);
-  };
+
   const handleClickProfile = event => {
     if (openProfile && openProfile.contains(event.target)) {
       setOpenProfile(null);
@@ -63,10 +49,6 @@ export default function AdminNavbarLinks() {
     history.push({ pathname: '/admin/' })
   };
 
-  // React.useEffect(() => {
-  //   getComplains(1,true).then(res => setComplains(res))
-  // },[])
-
   return (
     <div>
       <Button
@@ -82,63 +64,6 @@ export default function AdminNavbarLinks() {
           <p className={classes.linkText}>Pos</p>
         </Hidden>
       </Button>
-      <div className={classes.manager}>
-        {/* <Button
-          color={window.innerWidth > 959 ? "transparent" : "black"}
-          justIcon={window.innerWidth > 959}
-          simple={!(window.innerWidth > 959)}
-          aria-owns={openNotification ? "notification-menu-list-grow" : null}
-          aria-haspopup="true"
-          onClick={handleClickNotification}
-          className={classes.buttonLink}
-        >
-          <Notifications className={classes.icons} />
-          <span className={classes.notifications}>{complains ? complains.length : 0}</span>
-          <Hidden mdUp implementation="css">
-            <p onClick={handleCloseNotification} className={classes.linkText}>
-              Notification
-            </p>
-          </Hidden>
-        </Button> */}
-        <ThemeChanger />
-        <Poppers
-          open={Boolean(openNotification)}
-          anchorEl={openNotification}
-          transition
-          disablePortal
-          className={
-            classNames({ [classes.popperClose]: !openNotification }) +
-            " " +
-            classes.popperNav
-          }
-        >
-          {({ TransitionProps, placement }) => (
-            <Grow
-              {...TransitionProps}
-              id="notification-menu-list-grow"
-              style={{
-                transformOrigin:
-                  placement === "bottom" ? "center top" : "center bottom"
-              }}
-            >
-              <Paper>
-                <ClickAwayListener onClickAway={handleCloseNotification}>
-                  <MenuList role="menu">
-                    {complains?.map((item, index) => (
-                      <MenuItem
-                        onClick={() => handleCloseNotification(item)}
-                        className={classes.dropdownItem}
-                      >
-                        A new Complaint from {item.customer_detail.user.username}
-                      </MenuItem>
-                    ))}
-                  </MenuList>
-                </ClickAwayListener>
-              </Paper>
-            </Grow>
-          )}
-        </Poppers>
-      </div>
       <div className={classes.manager}>
         <Button
           color={window.innerWidth > 959 ? "transparent" : "black"}

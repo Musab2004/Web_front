@@ -1,34 +1,23 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-// import { getStore } from '../../Services/Stores'
-import MapComponent from '../../components/Map/MapComponent'
-
 // Here we use Material Ui Components
 import {
-  Paper,
   Grid,
   CardContent,
-  CardActions,
-  Typography, List, ListItem, ListItemAvatar, IconButton, ListItemText,
+  Typography, List, ListItem, ListItemAvatar, ListItemText,
   Avatar
 } from '@material-ui/core'
 import Person from '@material-ui/icons/Person'
 import Email from '@material-ui/icons/Mail'
-import { Phone, House, Money, MoneyOffRounded, PictureInPictureSharp } from '@material-ui/icons'
-import DeleteIcon from '@material-ui/icons/Delete';
-import { getCustomer, getCustomerPurchases, getCustomerSubscriptions } from 'Services/Customers'
+import { Phone, House, MoneyOffRounded, PictureInPictureSharp } from '@material-ui/icons'
+import { getCustomer, getCustomerPurchases } from 'Services/Customers'
 import CustomerPurchases from 'components/Purchases/Customer'
 import Card from 'components/Card/Card'
-import { getRechargeHistory } from 'Services/Customers'
 import Loading from '../../components/Loading/Loading'
 import CardHeader from 'components/Card/CardHeader'
-import BillingHistoryTable from 'components/BillingHistory/BillingHistoryTable'
-import { Modal } from '@material-ui/core'
-import moment from 'moment'
 import CardIcon from 'components/Card/CardIcon'
 import GridContainer from 'components/Grid/GridContainer';
 import GridItem from 'components/Grid/GridItem';
-import { Chip } from '@material-ui/core'
 
 function ViewStore(props) {
   let { id } = useParams('id')
@@ -56,13 +45,6 @@ function ViewStore(props) {
   React.useEffect(() => {
     getCustomerPurchases(id).then(res => {
       setCustomerData(res)
-      // getRechargeHistory(id).then(res => {
-      //   setRechargeHistory(res)
-      //   getCustomerSubscriptions(id).then(res =>{
-      //     setSubscriptions(res)
-      //     setLoading(false)
-      //   })
-      // })
     }).catch(e => {
       setLoading(false)
       if (!e.response) {
