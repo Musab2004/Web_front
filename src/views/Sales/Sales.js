@@ -69,10 +69,7 @@ function Sales() {
       return;
     }
     setLoading(true)
-    getSaleHistory(0, 0, 0, 0, 1, {
-      start: startDate,
-      end: endDate,
-    }).then(res => {
+    getSaleHistory(startDate, endDate).then(res => {
       console.log(res)
       setData(res)
       setLoading(false)

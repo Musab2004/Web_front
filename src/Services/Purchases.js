@@ -30,23 +30,14 @@ export async function getPurchases() {
     })
 }
 
-export async function getPurchaseHistory(today = false, yesterday = false, week = false, month = false, manual = false, manualObj = {}) {
+export async function getPurchaseHistory(startDate, endDate) {
     const token = Cookies.get('token')
     let params = {};
-    if (today) params.today = today;
-    else if (yesterday) params.yesterday = yesterday;
-    else if (week) params.week = week;
-    else if (month) params.monthly = month;
-    else if (manual) {
-        params.manual = manual;
-        console.log('obj', (manualObj))
-        params.start = ((manualObj.start).getTime() / 1000);
-        params.end = ((manualObj.end).getTime() / 1000);
+    params = {
+        startDate: startDate,
+        endDate: endDate
     }
-    else {
-        params.recent = true
-    }
-    return axios.get('/purchase/', {
+    return axios.get('/purchases/', {
         headers: {
             "Authorization": `Token ${token}`
         },
@@ -54,7 +45,7 @@ export async function getPurchaseHistory(today = false, yesterday = false, week 
     }).then(response => {
         return response.data
     }).catch(e => {
-        alert(e.message, (e.response.data.detail))
+        throw e
     })
 }
 

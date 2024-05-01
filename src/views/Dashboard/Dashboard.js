@@ -55,23 +55,6 @@ export default function Dashboard() {
   const [products, setproducts] = React.useState([])
   const [registers, setregisters] = React.useState(0)
   const [sales, setSales] = React.useState(100)
-
-  React.useEffect(() => {
-    // getComplains(1,true).then(res => {
-    //   setComplains(res.results)
-    // })
-    // getDeliveryBoys().then(res => setriders(res.length))
-    // getStores().then(res => setstores(res.length))
-    // getCustomers().then(res => setcustomers(res.length))
-    // let price=0;
-    // getPurchases(true).then(res => {
-    //   for (let m in res) {
-    //     price += res.price
-    //   }
-    // })
-    // setSales(price)
-  }, [])
-
   React.useEffect(() => {
     getTopCustomers().then(res => {
       setcustomers(res)
@@ -99,10 +82,13 @@ export default function Dashboard() {
     getCurrentMonthSales().then(res => {
       console.log(res)
 
-      let stat = (res.currentMonthSales.total_sales_count / (res.previousMonthSales.total_sales_count === 0 ? 1 : res.previousMonthSales.total_sales_count)) * 100;
-      let stat2 =
-        (res.currentMonthSales.total_sales /
-          (res.previousMonthSales.total_sales === null ? 1 : res.previousMonthSales.total_sales)) * 100;
+      // let stat = (res.currentMonthSales.total_sales_count / (res.previousMonthSales.total_sales_count === 0 ? 1 : res.previousMonthSales.total_sales_count)) * 100;
+      let stat = res.currentMonthSales.total_sales_count - res.previousMonthSales.total_sales_count;
+      stat = stat / res.previousMonthSales.total_sales_count * 100;
+      stat = stat.toFixed(2)
+      let stat2 = res.currentMonthSales.total_sales - res.previousMonthSales.total_sales;
+      stat2 = stat2 / res.previousMonthSales.total_sales * 100;
+      stat2 = stat2.toFixed(2)
       setMonthSales({
         ...res,
         stat: stat,
@@ -120,7 +106,7 @@ export default function Dashboard() {
           </div>
           <div class="stat-title">Current Month Sales</div>
           <div class="stat-value text-primary">{monthSales.currentMonthSales ? monthSales.currentMonthSales.total_sales_count : 0}</div>
-          <div class="stat-desc">{monthSales.stat}% {monthSales.stat > 1 ? "more" : "less"} than last month</div>
+          <div class="stat-desc">{Math.abs(monthSales.stat)}% {monthSales.stat > 1 ? "more" : "less"} than last month</div>
         </div>
 
 
@@ -130,7 +116,7 @@ export default function Dashboard() {
           </div>
           <div class="stat-title">Monthly Revenue</div>
           <div class="stat-value text-info">Rs. {monthSales.currentMonthSales ? monthSales.currentMonthSales.total_sales : 0}</div>
-          <div class="stat-desc">{monthSales.stat2}% {monthSales.stat2 > 1 ? "more" : "less"} than last month</div>
+          <div class="stat-desc">{Math.abs(monthSales.stat2)}% {monthSales.stat2 > 1 ? "more" : "less"} than last month</div>
         </div>
 
 
@@ -174,7 +160,7 @@ export default function Dashboard() {
                         <TableCell>{product.name}</TableCell>
                         <TableCell>{product.total_quantity}</TableCell>
                         <TableCell>
-                          <Button onClick={() => history.push({ pathname: '/admin/products/' + product.id, product: product })} color="success" >View</Button>
+                          <Button onClick={() => history.push({ pathname: '/admin/products/update/' + product.id, product: product })} color="success" >View</Button>
                         </TableCell>
                       </TableRow>
                     )

@@ -61,7 +61,7 @@ export default function PurchasesTable(props) {
                         "Invoice Number": item.invoice_no,
                         "Supplier": item.contact_name,
                         "Total": item.final_total,
-                        "Date": moment(item.transaction_date).format("h:mm DD-MM"),
+                        "Date": moment(item.transaction_date).format("LL"),
                         "Actions": (
                             <ButtonGroup disableElevation variant="contained" color="primary">
                                 <Button color="primary"

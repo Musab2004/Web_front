@@ -92,7 +92,7 @@ export async function updateSupplier(data, id) {
 
 export async function getSupplierPurchases(id) {
     const token = Cookies.get('token')
-    return axios.get('/order/?supplier=' + id, {
+    return axios.get('/supplier/purchases/' + id, {
         headers: {
             "Authorization": `Token ${token}`
         },
@@ -100,36 +100,6 @@ export async function getSupplierPurchases(id) {
         return response.data
     }).catch(e => {
         alert(e.message, (e.response.data.detail))
-    })
-}
-
-
-export async function getRechargeHistory(id) {
-    let token = await Cookies.get('token')
-    return axios.get('/recharge-history/' + id + '/', {
-        headers: {
-            "Authorization": `Token ${token}`
-        }
-    }).then(res => {
-        console.log(res.data)
-        return res.data
-    }).catch(e => {
-        throw e;
-    })
-}
-
-
-export async function getSupplierSubscriptions(id) {
-    let token = await Cookies.get('token')
-    return axios.get('/subscription/?supplier=' + id, {
-        headers: {
-            "Authorization": `Token ${token}`
-        }
-    }).then(res => {
-        console.log(res.data)
-        return res.data
-    }).catch(e => {
-        throw e;
     })
 }
 

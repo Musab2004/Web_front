@@ -29,7 +29,7 @@ export default function LeftSideBar(props) {
                         </g>
                     </svg>
                 </a>
-                <ul class="flex flex-col space-y-2 mt-12">
+                {/* <ul class="flex flex-col space-y-2 mt-12">
                     <li>
                         <a href="#" class="flex items-center">
                             <span className="flex items-center justify-center h-12 w-12 rounded-2xl bg-cyan-300 shadow-lg text-white">
@@ -80,7 +80,7 @@ export default function LeftSideBar(props) {
                             </span>
                         </a>
                     </li>
-                </ul>
+                </ul> */}
                 <Link to={'/admin'} target="_blank"
                     class="mt-auto flex items-center justify-center text-cyan-200 hover:text-cyan-100 h-10 w-10 focus:outline-none">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">

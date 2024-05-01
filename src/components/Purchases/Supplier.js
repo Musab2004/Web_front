@@ -13,14 +13,6 @@ const columns = [
         }
     },
     {
-        name: "Customer",
-        options: {
-            filter: true,
-            sort: true,
-            filterType: 'dropdown'
-        }
-    },
-    {
         name: "Total",
         options: {
             filter: false,
@@ -29,13 +21,6 @@ const columns = [
     },
     {
         name: "Date",
-        options: {
-            filter: false,
-            sort: true
-        }
-    },
-    {
-        name: "Discount Amount",
         options: {
             filter: false,
             sort: true
@@ -55,25 +40,21 @@ const options = {
 };
 
 
-export default function SalesTable(props) {
-    const [data, setData] = React.useState([])
+export default function PurchasesTableSupplier(props) {
     const history = useHistory()
-
     return (
         <MUIDataTable
-            title={"Sales"}
+            title={"Supplier Purchases"}
             data={
                 props.data?.map((item, index) => {
                     return {
                         "Invoice Number": item.invoice_no,
-                        "Customer": item.contact_name,
                         "Total": item.final_total,
-                        "Date": moment(item.transaction_date).format("LL"),
-                        "Discount Amount": item.discount_amount,
+                        "Date": moment(item.transaction_date).format("h:mm DD-MM"),
                         "Actions": (
                             <ButtonGroup disableElevation variant="contained" color="primary">
                                 <Button color="primary"
-                                    onClick={() => history.push('/admin/sales/view/' + item.id)}
+                                    onClick={() => history.push('/admin/purchases/view/' + item.id)}
                                 >View</Button>
                             </ButtonGroup>)
                     }

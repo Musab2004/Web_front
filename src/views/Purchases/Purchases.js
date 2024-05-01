@@ -69,10 +69,7 @@ function Purchases() {
       return;
     }
     setLoading(true)
-    getPurchaseHistory(0, 0, 0, 0, 1, {
-      start: startDate,
-      end: endDate,
-    }).then(res => {
+    getPurchaseHistory(startDate, endDate).then(res => {
       console.log(res)
       setData(res)
       setLoading(false)
@@ -83,7 +80,7 @@ function Purchases() {
         setMsg('Network Error')
       }
       else {
-        setMsg(e.response.data.detail)
+        setMsg(e.response.data)
       }
       setErr(true)
     })
