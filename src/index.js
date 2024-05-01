@@ -5,8 +5,7 @@ import { Router, Route, Switch, Redirect } from "react-router-dom";
 import { checkUser } from 'Services/User'
 
 // core components
-// import Admin from "layouts/Admin.js";
-import Admin2 from "layouts/Admin2.js";
+import Admin from "layouts/Admin.js";
 import Login from './views/Auth/Login'
 
 import "assets/css/material-dashboard-react.css?v=1.9.0";
@@ -25,7 +24,7 @@ ReactDOM.render(
         render={props =>
           checkUser() != undefined ? (
             <>
-              <Route path="/admin" component={Admin2} />
+              <Route path="/admin" component={Admin} />
               <Route exact path="/pos" component={POSScreen} />
               <Route exact path="/home" component={Home} />
               <Redirect from="/" to={props.location} />
@@ -35,7 +34,7 @@ ReactDOM.render(
           )
         }
       />
-      {/* <Route path="/admin" component={Admin2} /> */}
+      {/* <Route path="/admin" component={Admin} /> */}
 
     </Switch>
   </Router>,

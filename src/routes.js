@@ -184,10 +184,7 @@ function determineFinalRoutes() {
       component: AddProduct,
       layout: '/admin',
       invisible: true,
-    })
-  }
-  if (user.permissions.find(p => p === 'product.update')) {
-    finalRoutes.push({
+    }, {
       path: '/products/update/:id',
       name: 'Update Product',
       icon: CustomerIcon,

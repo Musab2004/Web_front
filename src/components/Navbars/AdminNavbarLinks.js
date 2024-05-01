@@ -23,6 +23,7 @@ import styles from "assets/jss/material-dashboard-react/components/headerLinksSt
 import { useHistory } from 'react-router-dom'
 // import { getComplains } from "Services/Complains";
 import Cookies from "js-cookie";
+import ThemeChanger from "components/ThemeChanger";
 
 const useStyles = makeStyles(styles);
 
@@ -82,7 +83,7 @@ export default function AdminNavbarLinks() {
         </Hidden>
       </Button>
       <div className={classes.manager}>
-        <Button
+        {/* <Button
           color={window.innerWidth > 959 ? "transparent" : "black"}
           justIcon={window.innerWidth > 959}
           simple={!(window.innerWidth > 959)}
@@ -98,7 +99,8 @@ export default function AdminNavbarLinks() {
               Notification
             </p>
           </Hidden>
-        </Button>
+        </Button> */}
+        <ThemeChanger />
         <Poppers
           open={Boolean(openNotification)}
           anchorEl={openNotification}

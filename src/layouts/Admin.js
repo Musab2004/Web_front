@@ -8,20 +8,18 @@ import { makeStyles } from "@material-ui/core/styles";
 // core components
 import Navbar from "components/Navbars/Navbar.js";
 import Footer from "components/Footer/Footer.js";
-import Sidebar from "components/Sidebar/Sidebar.js";
-import Sidebar2 from "components/Sidebar/SideBar2.js";
-import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
+import Sidebar3 from "components/Sidebar/Sidebar3.js";
 
 import routes from "routes.js";
-
 import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
 
 import bgImage from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/logo2.png";
+import { themeState } from "states/themeState";
 
 let ps;
 
-const switchRoutes = (
+const switchRoutes = (routes) => (
   <Switch>
     {routes.map((prop, key) => {
       if (prop.layout === "/admin") {
@@ -50,21 +48,8 @@ export default function Admin({ ...rest }) {
   // states and functions
   const [image, setImage] = React.useState(bgImage);
   const [color, setColor] = React.useState("blue");
-  const [fixedClasses, setFixedClasses] = React.useState("dropdown show");
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const handleImageClick = image => {
-    setImage(image);
-  };
-  const handleColorClick = color => {
-    setColor(color);
-  };
-  const handleFixedClick = () => {
-    if (fixedClasses === "dropdown") {
-      setFixedClasses("dropdown show");
-    } else {
-      setFixedClasses("dropdown");
-    }
-  };
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -76,29 +61,36 @@ export default function Admin({ ...rest }) {
       setMobileOpen(false);
     }
   };
-  // initialize and destroy the PerfectScrollbar plugin
+  const [theme, setTheme] = themeState.use()
   React.useEffect(() => {
-    if (navigator.platform.indexOf("Win") > -1) {
-      ps = new PerfectScrollbar(mainPanel.current, {
-        suppressScrollX: true,
-        suppressScrollY: false
-      });
-      document.body.style.overflow = "hidden";
-    }
-    window.addEventListener("resize", resizeFunction);
-    // Specify how to clean up after this effect:
-    return function cleanup() {
-      if (navigator.platform.indexOf("Win") > -1) {
-        ps.destroy();
-      }
-      window.removeEventListener("resize", resizeFunction);
-    };
-  }, [mainPanel]);
+    // edit the attribute data-theme of html tag
+    const html = document.getElementsByTagName("html")[0];
+    // set the data-theme attribute to the current theme
+    html.setAttribute("data-theme", theme);
+  }, [theme])
   return (
-    <div className={classes.wrapper}>
-      <Sidebar
-        routes={routes.filter(route => route.invisible === undefined)}
-        logoText={"Getx"}
+    <div className="drawer drawer-mobile"><input id="main-menu" type="checkbox" className="drawer-toggle" />
+      <main class="flex-grow block overflow-x-hidden bg-base-100 text-base-content drawer-content">
+        <Navbar
+          routes={routes()}
+          handleDrawerToggle={handleDrawerToggle}
+          {...rest}
+        />
+        <div class="p-4 lg:p-10">
+          {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
+          {getRoute() ? (
+            <div className={classes.content}>
+              <div className={classes.container}>{switchRoutes(routes())}</div>
+            </div>
+          ) : (
+            <div className={classes.map}>{switchRoutes(routes())}</div>
+          )}
+          {getRoute() ? <Footer /> : null}
+        </div>
+      </main>
+      <Sidebar3
+        routes={routes().filter(route => route.invisible === undefined)}
+        // logoText={"Getx"}
         logo={logo}
         image={image}
         handleDrawerToggle={handleDrawerToggle}
@@ -106,22 +98,6 @@ export default function Admin({ ...rest }) {
         color={color}
         {...rest}
       />
-      <div className={classes.mainPanel} ref={mainPanel}>
-        <Navbar
-          routes={routes}
-          handleDrawerToggle={handleDrawerToggle}
-          {...rest}
-        />
-        {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
-        {getRoute() ? (
-          <div className={classes.content}>
-            <div className={classes.container}>{switchRoutes}</div>
-          </div>
-        ) : (
-          <div className={classes.map}>{switchRoutes}</div>
-        )}
-        {getRoute() ? <Footer /> : null}
-      </div>
     </div>
   );
 }

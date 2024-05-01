@@ -28,8 +28,8 @@ function ProductCard(props) {
     const { product } = props;
     const [cart, setCart] = cartState.use();
     return (
-        <div class="card  bg-gray-100 shadow-xl">
-            <figure><img src={product.image} alt={product.name} /></figure>
+        <div class="card   bg-gray-100 shadow-xl">
+            <figure><img className='cover h-48 w-full' src={product.image} alt={product.name} /></figure>
             <div class="card-body">
                 <h2 class="card-title">
                     {product.name}

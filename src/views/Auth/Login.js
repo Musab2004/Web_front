@@ -84,7 +84,7 @@ export default function Login() {
 
               <div class="text-center font-sans lg:text-left">
                 <h1 class="mb-5 text-5xl font-bold">
-                  Getx POS Admin
+                  Getx POS Login
                 </h1>
                 <p class="mb-5">
                   Sign In To Getx POS
