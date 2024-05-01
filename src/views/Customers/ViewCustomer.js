@@ -7,19 +7,18 @@ import MapComponent from '../../components/Map/MapComponent'
 import {
   Paper,
   Grid,
-  Card,
   CardContent,
   CardActions,
   Typography, List, ListItem, ListItemAvatar, IconButton, ListItemText,
   Avatar
 } from '@material-ui/core'
-import FolderIcon from '@material-ui/icons/Folder';
 import Person from '@material-ui/icons/Person'
 import Email from '@material-ui/icons/Mail'
-import { Phone, House, RssFeed, Money, MoneyOffRounded } from '@material-ui/icons'
+import { Phone, House, Money, MoneyOffRounded, PictureInPictureSharp } from '@material-ui/icons'
 import DeleteIcon from '@material-ui/icons/Delete';
 import { getCustomer, getCustomerPurchases, getCustomerSubscriptions } from 'Services/Customers'
-import PurchasesTable from 'components/Purchases/PurchasesTable'
+import CustomerPurchases from 'components/Purchases/Customer'
+import Card from 'components/Card/Card'
 import { getRechargeHistory } from 'Services/Customers'
 import Loading from '../../components/Loading/Loading'
 import CardHeader from 'components/Card/CardHeader'
@@ -30,144 +29,56 @@ import CardIcon from 'components/Card/CardIcon'
 import GridContainer from 'components/Grid/GridContainer';
 import GridItem from 'components/Grid/GridItem';
 import { Chip } from '@material-ui/core'
-import SubscriptionsTable from 'components/Subscriptions/SubscriptionsTable'
 
 function ViewStore(props) {
   let { id } = useParams('id')
   let { item } = props.location
   let [data, setData] = React.useState(null)
-  const [customerData, setCustomerData] = React.useState(null)
+  const [customerData, setCustomerData] = React.useState({
+    result: [],
+    purchases: 0,
+    purchasesAmount: 0,
+  })
   React.useEffect(() => {
     getCustomer(id).then(res => setData(res))
-
+    getCustomerPurchases(id).then(res => {
+      console.log(res)
+    })
   }, [])
 
   const [loading, setLoading] = React.useState(true)
-  const [rechargeHistory, setRechargeHistory] = React.useState(true)
-  const [startDate, setSDate] = React.useState(new Date())
-  const [endDate, setEDate] = React.useState(new Date())
 
   const [errorMsg, setMsg] = React.useState(false)
   const [err, setErr] = React.useState(false)
   const [modal, setModal] = React.useState(false)
   const [selected, setSelected] = React.useState(false)
-  const [subscriptions, setSubscriptions] = React.useState(null)
 
   React.useEffect(() => {
-    // getCustomerPurchases(id).then(res => {
-    //   setCustomerData(res)
-    //   getRechargeHistory(id).then(res => {
-    //     setRechargeHistory(res)
-    //     getCustomerSubscriptions(id).then(res =>{
-    //       setSubscriptions(res)
-    //       setLoading(false)
-    //     })
-    //   })
-    // }).catch(e => {
-    //   setLoading(false)
-    //   if (!e.response) {
-    //     setMsg('Network Error')
-    //   }
-    //   else {
-    //     setMsg(e.response.data.detail)
-    //   }
-    //   setErr(true)
-    // })
+    getCustomerPurchases(id).then(res => {
+      setCustomerData(res)
+      // getRechargeHistory(id).then(res => {
+      //   setRechargeHistory(res)
+      //   getCustomerSubscriptions(id).then(res =>{
+      //     setSubscriptions(res)
+      //     setLoading(false)
+      //   })
+      // })
+    }).catch(e => {
+      setLoading(false)
+      if (!e.response) {
+        setMsg('Network Error')
+      }
+      else {
+        setMsg(e.response.data.detail)
+      }
+      setErr(true)
+    })
 
   }, [])
 
-  if (data == null || rechargeHistory == null) return <Loading open={loading} />
+  if (data == null) return <Loading open={loading} />
   return (
     <Grid container>
-
-      <Modal
-        open={modal}
-        onClose={() => setModal(false)}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Grid item xs={12} sm={12} md={5}>
-          <Card elevation={3} style={{ marginTop: '20px' }}>
-            <CardHeader>
-              <Grid
-                container
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-
-                <Grid item xs={6} >
-                  <Typography color="textSecondary" gutterBottom>
-                    Payment Status
-                  </Typography>
-                </Grid>
-
-                <Grid item style={{ alignSelf: "flex-end" }} xs={6} >
-                  <Typography color="textPrimary" variant="h4" align="right" >
-                    {selected && selected.payment_detail.status}
-                  </Typography>
-                  <p style={{ textAlign: 'right' }} >
-                    Transaction # {selected && selected.payment_detail.transaction_id}
-                  </p>
-                </Grid>
-              </Grid>
-            </CardHeader>
-            <CardContent >
-              <Grid
-                container
-                spacing={2}
-                justifyContent="space-between"
-              >
-
-                <Grid
-                  item
-                  xs={4}
-                >
-                  <Typography variant="h5" >
-                    Date:
-                  </Typography>
-                  <Typography variant="caption" >{selected && moment(selected.date).format('DD/MM/YYYY')}</Typography>
-                </Grid>
-
-                <Grid
-                  item
-                  xs={4}
-                >
-                  <Typography variant="h5" >
-                    Type:
-                  </Typography>
-                  <Chip size="small"
-                    color={selected && selected.payment_detail.type_of == "JAZZ" ? "secondary" : "primary"}
-                    label={selected && selected.payment_detail.type_of} />
-                </Grid>
-
-                <Grid
-                  item
-                  xs={4}
-                >
-                  <Typography variant="h5" >
-                    Amount:
-                  </Typography>
-                  <Chip
-                    variant="outlined"
-                    size="small"
-                    icon={<Money />}
-                    label={`Rs.${selected && selected.payment_detail.amount}`}
-                    color="secondary"
-                  />
-                </Grid>
-
-              </Grid>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Modal>
-
       <Grid item xs={12} sm={12} md={12}>
         <Card >
           <CardContent>
@@ -185,7 +96,7 @@ function ViewStore(props) {
                   primary="Name"
                 />
                 <Typography>
-                  {data.name}
+                  {data.name || '-'}
                 </Typography>
               </ListItem>
 
@@ -199,7 +110,7 @@ function ViewStore(props) {
                   primary="Email"
                 />
                 <Typography>
-                  {data.email}
+                  {data.email || '-'}
                 </Typography>
               </ListItem>
 
@@ -213,7 +124,7 @@ function ViewStore(props) {
                   primary="Phone"
                 />
                 <Typography>
-                  {data.phone}
+                  {data.phone || '-'}
                 </Typography>
               </ListItem>
 
@@ -227,16 +138,15 @@ function ViewStore(props) {
                   primary="Address"
                 />
                 <Typography>
-                  {data.address}
+                  {data.address || '-'}
                 </Typography>
               </ListItem>
             </List>
           </CardContent>
 
         </Card>
-
       </Grid>
-      <br />
+
       <br />
 
       <GridContainer xs={12} sm={12} md={12}>
@@ -244,37 +154,29 @@ function ViewStore(props) {
           <Card style={{ marginTop: '20px', marginBottom: '20px' }}>
             <CardHeader color="success" stats icon>
               <CardIcon color="success">
+                <PictureInPictureSharp />
+              </CardIcon>
+              <p style={{ color: "black" }}>Customer Total Purchases</p>
+              <h3 style={{ color: "black" }}>{customerData.purchases}</h3>
+            </CardHeader>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={6} md={4}>
+
+          <Card style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <CardHeader color="warning" stats icon>
+              <CardIcon color="warning">
                 <MoneyOffRounded />
               </CardIcon>
-              <p style={{ color: "black" }}>Wallet Balance</p>
-              <h3 style={{ color: "black" }}>Rs.{data.balance}</h3>
+              <p style={{ color: "black" }}>Customer Amount Spent</p>
+              <h3 style={{ color: "black" }}>Rs.{customerData.purchasesAmount}</h3>
             </CardHeader>
           </Card>
         </GridItem>
       </GridContainer>
-      <Grid item xs={12} sm={12} md={12} style={{ marginTop: "20px" }} >
-
-        <Card elevation={3} >
-          <CardHeader>
-            <Typography>
-              Customer Recharge History
-            </Typography>
-          </CardHeader>
-          <CardContent >
-            {rechargeHistory && <BillingHistoryTable setOpen={setModal} setItem={setSelected} loading={loading} data={rechargeHistory} />}
-          </CardContent>
-        </Card>
-      </Grid>
-
       <div style={{ marginTop: '20px', width: "100%" }} >
-        <PurchasesTable data={customerData} />
+        <CustomerPurchases data={customerData.result} />
       </div>
-
-
-      <div style={{ marginTop: '20px', width: "100%" }} >
-        <SubscriptionsTable data={subscriptions} />
-      </div>
-
     </Grid>
   )
 }

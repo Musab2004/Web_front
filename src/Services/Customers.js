@@ -92,7 +92,7 @@ export async function updateCustomer(data, id) {
 
 export async function getCustomerPurchases(id) {
     const token = Cookies.get('token')
-    return axios.get('/order/?customer=' + id, {
+    return axios.get('/customer/purchases/' + id, {
         headers: {
             "Authorization": `Token ${token}`
         },

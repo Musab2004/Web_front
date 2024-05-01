@@ -50,28 +50,8 @@ function ViewSupplier(props) {
   const [err, setErr] = React.useState(false)
   const [modal, setModal] = React.useState(false)
   const [selected, setSelected] = React.useState(false)
-  const [subscriptions, setSubscriptions] = React.useState(null)
 
   React.useEffect(() => {
-    // getSupplierPurchases(id).then(res => {
-    //   setSupplierData(res)
-    //   getRechargeHistory(id).then(res => {
-    //     setRechargeHistory(res)
-    //     getSupplierSubscriptions(id).then(res =>{
-    //       setSubscriptions(res)
-    //       setLoading(false)
-    //     })
-    //   })
-    // }).catch(e => {
-    //   setLoading(false)
-    //   if (!e.response) {
-    //     setMsg('Network Error')
-    //   }
-    //   else {
-    //     setMsg(e.response.data.detail)
-    //   }
-    //   setErr(true)
-    // })
 
   }, [])
 
@@ -269,10 +249,6 @@ function ViewSupplier(props) {
         <PurchasesTable data={supplierData} />
       </div>
 
-
-      <div style={{ marginTop: '20px', width: "100%" }} >
-        <SubscriptionsTable data={subscriptions} />
-      </div>
 
     </Grid>
   )
