@@ -15,6 +15,7 @@ import CardFooter from "components/Card/CardFooter.js";
 
 import avatar from "assets/img/faces/marc.jpg";
 import Cookies from 'js-cookie'
+import { TextField } from "@material-ui/core";
 const styles = {
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -38,12 +39,12 @@ const useStyles = makeStyles(styles);
 
 export default function UserProfile() {
   const classes = useStyles();
-  const [data,setData] = React.useState({})
+  const [data, setData] = React.useState({})
   React.useEffect(() => {
     let temp = Cookies.getJSON('user')
     setData(temp)
     console.log(temp)
-  },[])
+  }, [])
   return (
     <div>
       <GridContainer>
@@ -56,68 +57,65 @@ export default function UserProfile() {
             <CardBody>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={3}>
-                  <CustomInput
-                    labelText="Username"
+                  <TextField
                     id="username"
+                    label="Username"
                     formControlProps={{
                       fullWidth: true
                     }}
                     value={data.username}
+                    onChange={(e) => { setData({ ...data, username: e.target.value }) }}
+
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="Email address"
+                  <TextField
+                    label="Email address"
                     id="email-address"
                     formControlProps={{
                       fullWidth: true
                     }}
+                    value={data.email}
+                    onChange={(e) => { setData({ ...data, email: e.target.value }) }}
                   />
                 </GridItem>
               </GridContainer>
-            
+
+
               <GridContainer>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="City"
-                    id="city"
+                <GridItem xs={12} sm={12} md={3}>
+                  <TextField
+                    id="firstname"
+                    label="First Name"
                     formControlProps={{
                       fullWidth: true
                     }}
+                    value={data.firstname}
+                    onChange={(e) => { setData({ ...data, firstname: e.target.value }) }}
+
                   />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="Country"
-                    id="country"
+                <GridItem xs={12} sm={12} md={3}>
+                  <TextField
+                    label="Last Name"
+                    id="lname"
                     formControlProps={{
                       fullWidth: true
                     }}
+                    value={data.lastname}
+                    onChange={(e) => { setData({ ...data, lastname: e.target.value }) }}
                   />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="Postal Code"
-                    id="postal-code"
+
+                <GridItem xs={12} sm={12} md={3}>
+                  <TextField
+                    label="Password"
+                    id="password"
                     formControlProps={{
                       fullWidth: true
                     }}
-                  />
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={12}>
-                  <InputLabel style={{ color: "#AAAAAA" }}>About me</InputLabel>
-                  <CustomInput
-                    labelText="Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo."
-                    id="about-me"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                    inputProps={{
-                      multiline: true,
-                      rows: 5
-                    }}
+                    value={data.password}
+                    onChange={(e) => { setData({ ...data, password: e.target.value }) }}
                   />
                 </GridItem>
               </GridContainer>
@@ -129,20 +127,9 @@ export default function UserProfile() {
         </GridItem>
         <GridItem xs={12} sm={12} md={4}>
           <Card profile>
-            <CardAvatar profile>
-              <a href="#pablo" onClick={e => e.preventDefault()}>
-                <img src={data.image} alt="..." />
-              </a>
-            </CardAvatar>
             <CardBody profile>
-              <h6 className={classes.cardCategory}>CEO / CO-FOUNDER</h6>
-                  <h4 className={classes.cardTitle}>{data.username}</h4>
-              <p className={classes.description}>
-                I'm the CEO of this esteemed Organisation. I believe in "Act your way into Thinking"
-              </p>
-              <Button color="primary" round>
-                Follow
-              </Button>
+              <h6 className={classes.cardCategory}>{data.role}</h6>
+              <h4 className={classes.cardTitle}>{data.username}</h4>
             </CardBody>
           </Card>
         </GridItem>

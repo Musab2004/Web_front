@@ -21,7 +21,7 @@ import logo from "assets/img/logo2.png";
 
 let ps;
 
-const switchRoutes = (
+const switchRoutes = (routes) => (
   <Switch>
     {routes.map((prop, key) => {
       if (prop.layout === "/admin") {
@@ -98,7 +98,7 @@ export default function Admin({ ...rest }) {
     <div className="drawer drawer-mobile"><input id="main-menu" type="checkbox" className="drawer-toggle" />
       <main class="flex-grow block overflow-x-hidden bg-base-100 text-base-content drawer-content">
         <Navbar
-          routes={routes}
+          routes={routes()}
           handleDrawerToggle={handleDrawerToggle}
           {...rest}
         />
@@ -106,16 +106,16 @@ export default function Admin({ ...rest }) {
           {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
           {getRoute() ? (
             <div className={classes.content}>
-              <div className={classes.container}>{switchRoutes}</div>
+              <div className={classes.container}>{switchRoutes(routes())}</div>
             </div>
           ) : (
-            <div className={classes.map}>{switchRoutes}</div>
+            <div className={classes.map}>{switchRoutes(routes())}</div>
           )}
           {getRoute() ? <Footer /> : null}
         </div>
       </main>
       <Sidebar3
-        routes={routes.filter(route => route.invisible === undefined)}
+        routes={routes().filter(route => route.invisible === undefined)}
         // logoText={"Getx"}
         logo={logo}
         image={image}

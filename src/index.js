@@ -5,12 +5,13 @@ import { Router, Route, Switch, Redirect } from "react-router-dom";
 import { checkUser } from 'Services/User'
 
 // core components
-import Admin from "layouts/Admin.js";
+// import Admin from "layouts/Admin.js";
 import Admin2 from "layouts/Admin2.js";
 import Login from './views/Auth/Login'
 
 import "assets/css/material-dashboard-react.css?v=1.9.0";
 import POSScreen from "views/Pos";
+import Home from "views/Home";
 
 const hist = createBrowserHistory();
 
@@ -26,6 +27,7 @@ ReactDOM.render(
             <>
               <Route path="/admin" component={Admin2} />
               <Route exact path="/pos" component={POSScreen} />
+              <Route exact path="/home" component={Home} />
               <Redirect from="/" to={props.location} />
             </>
           ) : (
@@ -33,7 +35,7 @@ ReactDOM.render(
           )
         }
       />
-      <Route path="/admin" component={Admin} />
+      {/* <Route path="/admin" component={Admin2} /> */}
 
     </Switch>
   </Router>,

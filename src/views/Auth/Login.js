@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom'
 import Loading from '../../components/Loading/Loading'
 import { Snackbar } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
+import { userState } from "states/userState";
 
 
 export default function Login() {
@@ -17,13 +18,16 @@ export default function Login() {
   const [loading, setLoading] = React.useState(false)
   const [errorMsg, setMsg] = React.useState(false)
   const [err, setErr] = React.useState(false)
+  const [user, setUser] = userState.use()
   async function handleLogin(values) {
     console.log(values)
     setLoading(true)
     await signUser(values.email, values.password).then(async res => {
       try {
         Cookies.set('token', res.token)
-        Cookies.set('user', (res.user))
+        res.user.permissions = res.user.permissions.map(p => p.name)
+        // Cookies.set('user', (res.user))
+        setUser(res.user)
         if (res) {
           console.log(res)
           setLoading(false)
