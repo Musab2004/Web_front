@@ -156,6 +156,7 @@ export default function Users() {
                         <ButtonGroup disableElevation variant="contained" color="primary">
                           <Button color="primary" onClick={() => {
                             setSelected(user)
+                            // wait for state to change
                             setShowUpdateModal(true)
                           }} >UPDATE</Button>
                           {user.id !== 1 && <Button color="secondary" onClick={handleDelete}>DELETE</Button>}
@@ -191,7 +192,14 @@ export default function Users() {
         </Card>
       </GridItem>
       <AddUser permissions={permissions} setLoading={setLoading} setMsg={setMsg} setErr={setErr} show={showModal} handleClose={() => setShowModal(false)} />
-      <UpdateUser permissions={permissions} setLoading={setLoading} setMsg={setMsg} setErr={setErr} show={showUpdateModal} item={selected} handleClose={() => setShowUpdateModal(false)} />
+      <UpdateUser
+        setLoading={setLoading}
+        setMsg={setMsg}
+        setErr={setErr}
+        show={showUpdateModal}
+        item={selected}
+        handleClose={() => setShowUpdateModal(false)}
+      />
     </GridContainer>
   );
 }

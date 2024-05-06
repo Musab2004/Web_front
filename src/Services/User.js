@@ -37,27 +37,24 @@ export function signOut() {
     }).then(res => {
       return res.data
     }).catch(e => {
-      console.log(e.message, JSON.stringify(e.data.data))
+      console.log(e.message, JSON.stringify(e.response.data))
     })
 }
 
-export function updateUser(field, value) {
-  console.log(value)
+export function updateUser(data, id) {
   const user = Cookies.getJSON('user')
   const token = Cookies.get('token')
-  axios
-    .patch(`/user/${user.id}/`, {
-      "push_token": value
-    },
+  return axios
+    .put(`/user/${id}/`, data,
       {
         headers: {
           "Authorization": `Token ${token}`
         }
       })
     .then(res => {
-      console.log(res.data);
+      return res.data
     })
-    .catch(err => console.log(err.data.data));
+    .catch(err => { throw err });
 }
 
 export function updateLocation(value) {
@@ -112,7 +109,7 @@ export async function getCities() {
     return response.data
   } catch (e) {
     console.log(e.data)
-    alert(e.message, JSON.stringify(e.data))
+    alert(e.message, JSON.stringify(e.response))
   }
 }
 
@@ -172,7 +169,7 @@ export async function addUser(values) {
     }).then(res => {
       return res.data
     }).catch(e => {
-      console.log(e.message, JSON.stringify(e.data.data))
+      console.log(e.message, JSON.stringify(e.response.data))
     })
 }
 
@@ -187,7 +184,7 @@ export async function deleteUser(id) {
     }).then(res => {
       return res.data
     }).catch(e => {
-      console.log(e.message, JSON.stringify(e.data.data))
+      console.log(e.message, JSON.stringify(e.response.data))
     })
 }
 
@@ -202,6 +199,21 @@ export async function getUsers() {
     }).then(res => {
       return res.data
     }).catch(e => {
-      console.log(e.message, JSON.stringify(e.data.data))
+      console.log(e.message, JSON.stringify(e.response.data))
+    })
+}
+
+// get a user
+export async function getUser(id) {
+  const token = await Cookies.get('token')
+  return axios.get('/user/' + id,
+    {
+      headers: {
+        "Authorization": `Token ${token}`
+      }
+    }).then(res => {
+      return res.data
+    }).catch(e => {
+      console.log(e.message, JSON.stringify(e.response.data))
     })
 }
