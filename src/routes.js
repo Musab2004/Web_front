@@ -1,24 +1,12 @@
 import Dashboard from '@material-ui/icons/Dashboard'
-import Person from '@material-ui/icons/Person'
 import CategoryIcon from '@material-ui/icons/Category'
-import Notifications from '@material-ui/icons/Notifications'
-import Home from '@material-ui/icons/Home'
 import CustomerIcon from '@material-ui/icons/Group'
 import RiderIcon from '@material-ui/icons/DirectionsBike'
 // core components/views for Admin layout
 import DashboardPage from 'views/Dashboard/Dashboard.js'
 import UserProfile from 'views/UserProfile/UserProfile.js'
-import ViewCarousel from '@material-ui/icons/ViewCarousel'
-import Map from '@material-ui/icons/Map'
-import Explore from '@material-ui/icons/Explore'
-import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight'
 import ShopIcon from '@material-ui/icons/Shop'
-import ChatBubbleIcon from '@material-ui/icons/ChatBubble'
-import CardMembershipSharpIcon from '@material-ui/icons/CardMembershipSharp'
-import StoreMallDirectorySharpIcon from '@material-ui/icons/StoreMallDirectorySharp'
-import BlockRoundedIcon from '@material-ui/icons/BlockRounded'
 import ShoppingCartRoundedIcon from '@material-ui/icons/ShoppingCartRounded'
-import AllInclusiveRoundedIcon from '@material-ui/icons/AllInclusiveRounded'
 
 // Getx's Routes
 //Customers
@@ -46,11 +34,11 @@ import Units from 'views/Units/Units'
 //Discounts
 import Discounts from 'views/Discounts/Discounts'
 import { AcUnitOutlined, AndroidSharp, ContactSupportOutlined, MeetingRoomTwoTone, MoneyOffOutlined } from '@material-ui/icons'
-import Analytics from 'views/Analytics'
 import AddPurchase from 'views/Purchases/AddPurchase'
-import POSScreen from 'views/Pos'
 import Sales from 'views/Sales/Sales'
 import SaleDetail from 'views/Sales/SaleDetails'
+import Person from '@material-ui/icons/Person'
+import Users from 'views/Users/Users'
 
 const dashboardRoutes = [
   {
@@ -62,17 +50,17 @@ const dashboardRoutes = [
     layout: '/admin',
   },
   {
-    path: '/analytics',
-    name: 'Analytics',
-    icon: AndroidSharp,
-    component: Analytics,
-    layout: '/admin',
-  },
-  {
     path: '/roles',
     name: 'Roles',
     icon: MeetingRoomTwoTone,
     component: Roles,
+    layout: '/admin',
+  },
+  {
+    path: '/users',
+    name: 'Users',
+    icon: Person,
+    component: Users,
     layout: '/admin',
   },
   {

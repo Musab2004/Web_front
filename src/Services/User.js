@@ -160,3 +160,48 @@ export async function updateSubArea(value) {
     })
     .catch(err => alert(err.message, JSON.stringify(err.data.data)));
 }
+
+// add a new user
+export async function addUser(values) {
+  const token = await Cookies.get('token')
+  return axios.post('/user/', values,
+    {
+      headers: {
+        "Authorization": `Token ${token}`
+      }
+    }).then(res => {
+      return res.data
+    }).catch(e => {
+      console.log(e.message, JSON.stringify(e.data.data))
+    })
+}
+
+// delete a user
+export async function deleteUser(id) {
+  const token = await Cookies.get('token')
+  return axios.delete('/user/' + id,
+    {
+      headers: {
+        "Authorization": `Token ${token}`
+      }
+    }).then(res => {
+      return res.data
+    }).catch(e => {
+      console.log(e.message, JSON.stringify(e.data.data))
+    })
+}
+
+// get all users
+export async function getUsers() {
+  const token = await Cookies.get('token')
+  return axios.get('/user/',
+    {
+      headers: {
+        "Authorization": `Token ${token}`
+      }
+    }).then(res => {
+      return res.data
+    }).catch(e => {
+      console.log(e.message, JSON.stringify(e.data.data))
+    })
+}
