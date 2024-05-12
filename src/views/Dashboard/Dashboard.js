@@ -40,6 +40,10 @@ import { TableBody, TableCell, TableHead, Table, TableRow, Button, Avatar } from
 // import { getComplains } from "Services/Complains";
 import { getPurchases } from "Services/Purchases";
 import { MoneyOffRounded } from "@material-ui/icons";
+import { getTopCustomers } from "Services/Statistics";
+import { getTopProducts } from "Services/Statistics";
+import { getCurrentMonthSales } from "Services/Statistics";
+import { getCurrentMonthCustomers } from "Services/Statistics";
 
 const useStyles = makeStyles(styles);
 
@@ -47,9 +51,9 @@ export default function Dashboard() {
   const classes = useStyles();
   const history = useHistory()
   const [complains, setComplains] = React.useState(null)
-  const [customers, setcustomers] = React.useState(0)
-  const [riders, setriders] = React.useState(0)
-  const [stores, setstores] = React.useState(0)
+  const [customers, setcustomers] = React.useState([])
+  const [products, setproducts] = React.useState([])
+  const [registers, setregisters] = React.useState(0)
   const [sales, setSales] = React.useState(100)
 
   React.useEffect(() => {
@@ -67,6 +71,46 @@ export default function Dashboard() {
     // })
     // setSales(price)
   }, [])
+
+  React.useEffect(() => {
+    getTopCustomers().then(res => {
+      setcustomers(res)
+    }
+    )
+  }, [])
+
+  React.useEffect(() => {
+    getTopProducts().then(res => {
+      setproducts(res)
+    }
+    )
+  }, [])
+
+  React.useEffect(() => {
+    getCurrentMonthCustomers().then(res => {
+      console.log(res)
+      setregisters(res)
+    }
+    )
+  }, [])
+  const [monthSales, setMonthSales] = React.useState({});
+
+  React.useEffect(() => {
+    getCurrentMonthSales().then(res => {
+      console.log(res)
+
+      let stat = (res.currentMonthSales.total_sales_count / (res.previousMonthSales.total_sales_count === 0 ? 1 : res.previousMonthSales.total_sales_count)) * 100;
+      let stat2 =
+        (res.currentMonthSales.total_sales /
+          (res.previousMonthSales.total_sales === null ? 1 : res.previousMonthSales.total_sales)) * 100;
+      setMonthSales({
+        ...res,
+        stat: stat,
+        stat2
+      })
+    }
+    )
+  }, [])
   return (
     <div>
       <div class="w-full shadow stats">
@@ -74,9 +118,9 @@ export default function Dashboard() {
           <div class="stat-figure text-primary">
             <Icon>content_copy</Icon>
           </div>
-          <div class="stat-title">No. of Riders</div>
-          <div class="stat-value text-primary">{riders}</div>
-          <div class="stat-desc">21% more than last month</div>
+          <div class="stat-title">Current Month Sales</div>
+          <div class="stat-value text-primary">{monthSales.currentMonthSales ? monthSales.currentMonthSales.total_sales_count : 0}</div>
+          <div class="stat-desc">{monthSales.stat}% {monthSales.stat > 1 ? "more" : "less"} than last month</div>
         </div>
 
 
@@ -84,9 +128,9 @@ export default function Dashboard() {
           <div class="stat-figure text-info">
             <MoneyOffRounded />
           </div>
-          <div class="stat-title">Monthly Sales</div>
-          <div class="stat-value text-info">Rs. {sales}</div>
-          <div class="stat-desc">21% more than last month</div>
+          <div class="stat-title">Monthly Revenue</div>
+          <div class="stat-value text-info">Rs. {monthSales.currentMonthSales ? monthSales.currentMonthSales.total_sales : 0}</div>
+          <div class="stat-desc">{monthSales.stat2}% {monthSales.stat2 > 1 ? "more" : "less"} than last month</div>
         </div>
 
 
@@ -94,81 +138,21 @@ export default function Dashboard() {
           <div class="stat-figure text-primary">
             <Store />
           </div>
-          <div class="stat-value">{stores}</div>
-          <div class="stat-title">Stores</div>
-          <div class="stat-desc text-info">31 tasks remaining</div>
+          <div class="stat-value">{registers.currentMonthCustomers}</div>
+          <div class="stat-title">New Customers This Month</div>
+          <div class="stat-desc text-info">{registers.previousMonthCustomers} Customers Registered Last Month</div>
         </div>
 
-        <div class="stat">
-          <div class="stat-figure text-accent">
-            <Accessibility />
-          </div>
-          <div class="stat-title">No. of Customers</div>
-          <div class="stat-value text-accent">{customers}</div>
-          <div class="stat-desc">21% more than last month</div>
-        </div>
 
       </div>
 
-      {/* <div class="tabs my-8 p-4 tabs-boxed align-center ">
-        <p  className="text-2xl font-sans font-extrabold text-primary" >Recent Registers</p>
-        <a className="tab">Customers</a> 
-        <a className="tab tab-active">Riders</a> 
-        <a className="tab">Stores</a>
-      </div> */}
-
       <GridContainer>
         <GridItem xs={12} sm={12} md={6}>
-          {/* <CustomTabs
-            title="Recent Registers"
-            headerColor="primary"
-            tabs={[
-              {
-                tabName: "Customers",
-                tabIcon: BugReport,
-                tabContent: (
-                  <Tasks
-                    checkedIndexes={[0, 3]}
-                    tasksIndexes={[0, 1, 2, 3]}
-                    // func={() => getCustomers(0, true)}
-                    url="customers"
-                  />
-                )
-              },
-              {
-                tabName: "Riders",
-                tabIcon: Code,
-                tabContent: (
-                  <Tasks
-                    checkedIndexes={[0]}
-                    tasksIndexes={[0, 1]}
-                    // func={() => getDeliveryBoys(false, 0, true)}
-                    url="deliveryboys"
-                  />
-                )
-              },
-              {
-                tabName: "Stores",
-                tabIcon: Cloud,
-                tabContent: (
-                  <Tasks
-                    checkedIndexes={[1]}
-                    tasksIndexes={[0, 1, 2]}
-                    // func={() => getStores(0, true)}
-                    url="stores"
-                  />
-                )
-              }
-            ]}
-          /> */}
-        </GridItem>
-
-        <GridItem xs={12} sm={12} md={6}>
           <Card>
-            <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>Latest Complains</h4>
+            <CardHeader color="danger">
+              <h4 className={classes.cardTitleWhite}>Top Selling Products</h4>
               <p className={classes.cardCategoryWhite}>
-                Below, You can see today's Complains
+                Below, you can see the top selling products recently
               </p>
             </CardHeader>
             <CardBody>
@@ -176,21 +160,59 @@ export default function Dashboard() {
                 <TableHead>
                   <TableRow>
                     <TableCell>ID</TableCell>
-                    <TableCell>From</TableCell>
-                    <TableCell>Title</TableCell>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Quantity</TableCell>
                     <TableCell>Actions</TableCell>
                   </TableRow>
                 </TableHead>
 
                 <TableBody>
-                  {complains?.map((complain, index) => {
+                  {products?.map((product, index) => {
                     return (
                       <TableRow key={index}>
-                        <TableCell>{complain.id}</TableCell>
-                        <TableCell><Avatar src={complain.customer_detail.user.image} />  {complain.customer_detail.user.username}</TableCell>
-                        <TableCell>{complain.title}</TableCell>
+                        <TableCell>{product.id}</TableCell>
+                        <TableCell>{product.name}</TableCell>
+                        <TableCell>{product.total_quantity}</TableCell>
                         <TableCell>
-                          <Button onClick={() => history.push({ pathname: '/admin/complains/' + complain.id, complain: complain })} color="success" >View</Button>
+                          <Button onClick={() => history.push({ pathname: '/admin/products/' + product.id, product: product })} color="success" >View</Button>
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })}
+                </TableBody>
+              </Table>
+            </CardBody>
+          </Card>
+        </GridItem>
+
+        <GridItem xs={12} sm={12} md={6}>
+          <Card>
+            <CardHeader color="warning">
+              <h4 className={classes.cardTitleWhite}>Top Buying Customers</h4>
+              <p className={classes.cardCategoryWhite}>
+                Below, You can see Top 5 Customers who have purchased the most
+              </p>
+            </CardHeader>
+            <CardBody>
+              <Table >
+                <TableHead>
+                  <TableRow>
+                    <TableCell>ID</TableCell>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Quantity</TableCell>
+                    <TableCell>Actions</TableCell>
+                  </TableRow>
+                </TableHead>
+
+                <TableBody>
+                  {customers?.map((customer, index) => {
+                    return (
+                      <TableRow key={index}>
+                        <TableCell>{customer.id}</TableCell>
+                        <TableCell>{customer.name}</TableCell>
+                        <TableCell>{customer.total_quantity}</TableCell>
+                        <TableCell>
+                          <Button onClick={() => history.push({ pathname: '/admin/customers/' + customer.id, customer: customer })} color="success" >View</Button>
                         </TableCell>
                       </TableRow>
                     )
